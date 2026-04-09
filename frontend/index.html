@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MBC Marketplace - Tokenized Project Financing</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>MBC Marketplace</h1>
+      <div class="wallet">
+        <span id="networkBadge" class="badge badge-muted">not connected</span>
+        <span id="accountLabel" class="account"></span>
+        <button id="connectBtn" type="button">Wallet verbinden</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="noticeBox" class="notice hidden"></section>
+
+      <section class="card">
+        <h2>Neues Projekt tokenisieren</h2>
+        <p class="muted">
+          Deployt einen eigenen ERC-3643 Token, eine Identity-Registry und ein
+          Compliance-Modul. Du bist danach Agent aller drei Contracts und kannst
+          Investoren whitelisten.
+        </p>
+        <form id="createForm" class="grid">
+          <label>
+            <span>Name</span>
+            <input name="name" required maxlength="64" placeholder="Mein Projekt" />
+          </label>
+          <label>
+            <span>Symbol</span>
+            <input name="symbol" required maxlength="11" placeholder="MPJ" />
+          </label>
+          <label class="full">
+            <span>Beschreibung</span>
+            <textarea name="description" rows="2" maxlength="500" placeholder="Kurzbeschreibung, wird on-chain gespeichert"></textarea>
+          </label>
+          <label>
+            <span>Gesamtzahl Tokens</span>
+            <input name="totalSupply" type="number" min="1" step="1" required placeholder="1000000" />
+          </label>
+          <label>
+            <span>Preis je Token (USDC)</span>
+            <input name="priceUsdc" type="number" min="0.000001" step="0.000001" required placeholder="1.50" />
+          </label>
+          <div class="actions full">
+            <button type="submit">Projekt erstellen</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="row-between">
+          <h2>Aktive Projekte</h2>
+          <button id="refreshBtn" type="button" class="ghost">Aktualisieren</button>
+        </div>
+        <div id="projectList" class="project-list">
+          <p class="muted">Verbinde deine Wallet, um Projekte zu laden.</p>
+        </div>
+      </section>
+
+      <section class="card" id="mockUsdcCard">
+        <h2>Test-USDC</h2>
+        <p class="muted">
+          Sichtbar wenn <code>USDC_ADDRESS</code> in <code>config.js</code> auf
+          MockUSDC zeigt. Prägt dir 1.000 mUSDC für Testkäufe.
+        </p>
+        <button id="mintMockBtn" type="button">1.000 Test-USDC prägen</button>
+        <p id="mockUsdcBalance" class="muted"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Marketplace: <code id="mpAddr"></code> · USDC: <code id="usdcAddr"></code> ·
+        Erwartete Chain: <span id="expectedChain"></span>
+      </p>
+    </footer>
+
+    <!-- ethers.js v6 UMD from jsdelivr. Switch to a self-hosted copy if you
+         don't want a CDN dependency. -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+    <script src="config.js"></script>
+    <script src="abis.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

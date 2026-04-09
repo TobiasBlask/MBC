@@ -1,0 +1,20 @@
+{
+  "name": "mbc-polygon-marketplace",
+  "version": "0.1.0",
+  "description": "Minimal Polygon marketplace for ERC-3643 tokenized project financing",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:amoy": "hardhat run scripts/deploy.js --network amoy",
+    "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
+    "frontend": "python3 -m http.server 8080 --directory frontend"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.0"
+  }
+}
