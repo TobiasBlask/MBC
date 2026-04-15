@@ -238,7 +238,10 @@ async function loadProjects() {
   for (let i = 0; i < count; i++) {
     try {
       const p = await c.getProject(i);
-      list.push({ id: i, ...p });
+      // ethers v6 Result: spreading only yields numeric indices, so use
+      // toObject() to keep the named fields.
+      const obj = typeof p.toObject === "function" ? p.toObject() : p;
+      list.push({ id: i, ...obj });
     } catch (err) {
       console.warn("project load failed", i, err);
     }
@@ -254,8 +257,13 @@ function renderProject(p) {
   const el = document.createElement("div");
   el.className = "project";
 
-  const tokensForSale = p.tokensForSale; // bigint
-  const tokensSold = p.tokensSold;
+  // Force bigint; ethers v6 usually returns bigint for uint256, but the Result
+  // proxy sometimes surfaces differently depending on how the tuple is read.
+  const tokensForSale = BigInt(p.tokensForSale);
+  const tokensSold = BigInt(p.tokensSold);
+  const pricePerToken = BigInt(p.pricePerToken);
+  const usdcRaised = BigInt(p.usdcRaised);
+  const usdcWithdrawn = BigInt(p.usdcWithdrawn);
   const wholeForSale = tokensForSale / 10n ** 18n;
   const wholeSold = tokensSold / 10n ** 18n;
   const pct = tokensForSale === 0n ? 0 : Number((tokensSold * 10000n) / tokensForSale) / 100;
@@ -294,7 +302,7 @@ function renderProject(p) {
           <input type="number" min="0" max="999" step="1" placeholder="Country (ISO num)" class="wl-country" value="0" />
           <button class="wl-btn">Whitelisten</button>
           <button class="wl-remove-btn ghost">Entfernen</button>
-          <button class="withdraw-btn ghost">USDC abheben (${formatUsdc(p.usdcRaised - p.usdcWithdrawn)})</button>
+          <button class="withdraw-btn ghost">USDC abheben (${formatUsdc(usdcRaised - usdcWithdrawn)})</button>
         </div>
       </div>
     `
